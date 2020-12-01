@@ -8,7 +8,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 /* Routerdom */
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { Access } from "./Access";
 import { Queue } from "./Queue";
 import { CreateTicket } from "./CreateTicket";
@@ -21,7 +21,7 @@ export const RouterPage = () => {
     <React.Fragment>
       <Router>
         <Layout style={{ height: "100vh" }}>
-          <Sider>
+          <Sider collapsedWidth="0" breakpoint="md">
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1" icon={<UserOutlined />}>
@@ -43,14 +43,14 @@ export const RouterPage = () => {
                 padding: 24,
                 minHeight: 280,
               }}
-            >
-              Content
+            >              
               {/* Router switch */}
               <Switch>
-              <Route path='/access' component={Access}/>
-              <Route path='/queue' component={Queue}/>
-              <Route path='/new-ticket' component={CreateTicket}/>
-              <Route path='/desktop' component={Desktop}/>
+                <Route exact path='/access' component={Access}/>
+                <Route exact path='/queue' component={Queue}/>
+                <Route exact path='/new-ticket' component={CreateTicket}/>
+                <Route exact path='/desktop' component={Desktop}/>
+                <Redirect to='/'/>
               </Switch>
             </Content>
           </Layout>
