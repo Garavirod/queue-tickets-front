@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import { useHideMenu } from "../hooks/useHideMenu";
 
 const { Title, Text } = Typography;
 
@@ -22,6 +23,7 @@ const tailLayout = {
 };
 
 export const Access = () => {
+  useHideMenu(true);
   const history = useHistory();
 
   const onFinish = (values) => {

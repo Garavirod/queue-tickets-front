@@ -1,10 +1,12 @@
 import React from 'react';
 import { Row, Col, Typography, Button, Divider } from 'antd';
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { useHideMenu } from '../hooks/useHideMenu';
 
 const { Title, Text } = Typography;
 export const Desktop = () =>{
 
+    useHideMenu(true);
 
     const Close = () =>{
 

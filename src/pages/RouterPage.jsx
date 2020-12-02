@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -13,15 +13,20 @@ import { Access } from "./Access";
 import { Queue } from "./Queue";
 import { CreateTicket } from "./CreateTicket";
 import { Desktop } from "./Desktop";
+import { UiContext } from "../Context/UiContext";
 
 const { Sider, Content } = Layout;
 
 export const RouterPage = () => {
+
+  const {hideMenu} = useContext( UiContext );
+
+
   return (
     <React.Fragment>
       <Router>
         <Layout style={{ height: "100vh" }}>
-          <Sider collapsedWidth="0" breakpoint="md">
+          <Sider collapsedWidth="0" breakpoint="md" hidden={hideMenu}>
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1" icon={<UserOutlined />}>
