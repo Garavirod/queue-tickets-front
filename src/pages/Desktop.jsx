@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Typography, Button, Divider } from 'antd';
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useHideMenu } from '../hooks/useHideMenu';
+import { getDataUserStorage } from '../helpers/utils';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 export const Desktop = () =>{
-
+    const history = useHistory();
     useHideMenu(true);
+    const [userData] = useState(getDataUserStorage());
+
+    if(!userData.agent || !userData.desktop){
+        return  <Redirect to="/access"/>
+    }
 
     const Close = () =>{
-
+        localStorage.removeItem('agent');
+        localStorage.removeItem('desktop');
+        history.replace('/access');        
     }
 
 
@@ -22,9 +31,9 @@ export const Desktop = () =>{
             <Title level={2}>Desktop page</Title>
             <Row>
                 <Col span={ 20 }>
-                    <Title level={3}>Rodrigo</Title>
+                    <Title level={3}>{userData.agent}</Title>
                     <Text>You are working in desktop : </Text>
-                    <Text type="success">34</Text>
+                    <Text type="success">{userData.desktop}</Text>
                 </Col>
 
                 <Col span={ 4 } align="roght">
@@ -45,7 +54,7 @@ export const Desktop = () =>{
                 <Text 
                     type="danger"
                     style={{fontSize:20}}
-                >55</Text>
+                >{userData.desktop}</Text>
                 </Col>
             </Row>
 

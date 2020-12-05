@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { useHideMenu } from "../hooks/useHideMenu";
+import { getDataUserStorage } from "../helpers/utils";
 
 const { Title, Text } = Typography;
 
@@ -24,10 +25,17 @@ const tailLayout = {
 
 export const Access = () => {
   useHideMenu(true);
+  const [userData] = useState(getDataUserStorage());
   const history = useHistory();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  if(userData.agent && userData.desktop){
+    return  <Redirect to="/desktop"/>
+  }
+
+  
+  const onFinish = ({agent,desktop}) => {  
+    localStorage.setItem('agent',agent);
+    localStorage.setItem('desktop',desktop);
     history.push('/desktop')
   };
 
