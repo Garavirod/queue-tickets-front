@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Row, Col, Button, Typography } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useHideMenu } from '../hooks/useHideMenu';
+import { SocketContext } from '../Context/SocketContext';
 
 const {Title, Text} = Typography;
 
 export const CreateTicket = () =>{
     useHideMenu(false);
 
-    const newTicket = () => {
+    const { socket } = useContext( SocketContext );
+    const [ticket, setTicket] =useState(null);
 
+    const newTicket = () => {
+        socket.emit('request-ticket',null,(ticket)=>{
+            // console.log(ticket);
+            setTicket(ticket);
+        });
     }
 
     return(
@@ -24,24 +31,30 @@ export const CreateTicket = () =>{
                         shape="round"
                         icon={<DownloadOutlined />}
                         size="large"
-                        onClick={newTicket}
+                        onClick={()=>newTicket()}
                     >                        
                         Generate
                     </Button>
                 </Col>
-            </Row>       
-            <Row style={{marginTop:100}}>
-                <Col span={14} offset={6} align="center">
-                    <Text level={2}>Your number is :</Text>
-                    <br/>
-                    <Text 
-                        type="success"
-                        style={{fontSize:55}}
-                    >
-                        56
-                    </Text>
-                </Col>
-            </Row>     
+            </Row> 
+            {
+                ticket 
+                && 
+                (
+                    <Row style={{marginTop:100}}>
+                        <Col span={14} offset={6} align="center">
+                            <Text level={2}>Your number is :</Text>
+                            <br/>
+                            <Text 
+                                type="success"
+                                style={{fontSize:55}}
+                            >
+                                {ticket.number}
+                            </Text>
+                        </Col>
+                    </Row>     
+                )
+            }      
         </React.Fragment>
     )
 }

@@ -4,7 +4,7 @@ export const UiContext = createContext();
 
 
 export const UiProvider = ({children}) => {
-    const [hideMenu, setHideMenu] = useState(true);
+    const [hideMenu, setHideMenu] = useState(false);
 
     return (
         <UiContext.Provider
