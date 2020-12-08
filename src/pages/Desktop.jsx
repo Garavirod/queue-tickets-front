@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Row, Col, Typography, Button, Divider } from 'antd';
 import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useHideMenu } from '../hooks/useHideMenu';
 import { getDataUserStorage } from '../helpers/utils';
 import { Redirect, useHistory } from 'react-router-dom';
+import { SocketContext } from '../Context/SocketContext';
 
 const { Title, Text } = Typography;
 export const Desktop = () =>{
     const history = useHistory();
     useHideMenu(true);
+    const {socket} = useContext(SocketContext);
     const [userData] = useState(getDataUserStorage());
+    const [ticket, setTicket] = useState(null);
 
     if(!userData.agent || !userData.desktop){
         return  <Redirect to="/access"/>
@@ -23,7 +26,10 @@ export const Desktop = () =>{
 
 
     const NextTicket = () =>{
-
+        socket.emit('next-dispatch', userData, ( ticket )=>{
+            console.log(ticket);
+            setTicket(ticket);
+        });
     }
 
     return(
@@ -48,15 +54,20 @@ export const Desktop = () =>{
                 </Col>
             </Row>
             <Divider/>
-            <Row>
-                <Col>
-                <Text>Your dispatching ticket number : </Text>
-                <Text 
-                    type="danger"
-                    style={{fontSize:20}}
-                >{userData.desktop}</Text>
-                </Col>
-            </Row>
+            {
+                ticket && 
+                (
+                    <Row>
+                        <Col>
+                        <Text>Your dispatching ticket number : </Text>
+                        <Text 
+                            type="danger"
+                            style={{fontSize:20}}
+                        >{ticket.number}</Text>
+                        </Col>
+                    </Row>
+                )
+            }
 
             <Row>
                 <Col
@@ -67,7 +78,7 @@ export const Desktop = () =>{
                     <Button 
                         type="primary"
                         shape="round"
-                        onClick = { NextTicket } >
+                        onClick = {()=>NextTicket()} >
                         <ArrowRightOutlined />
                         Next ticket
                     </Button>
